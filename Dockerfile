@@ -98,11 +98,13 @@ RUN \
   && ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
-
 # ***** CLEANUP *****
+
+COPY nginx.conf             /etc/nginx/nginx.conf
+COPY metrics/metrics.conf   /etc/nginx/conf.d
+COPY metrics/prometheus.lua /usr/local/lib
+
 EXPOSE 80 443
 
-ADD entry.sh /
-
-ENTRYPOINT ["/entry.sh"]
+CMD ["nginx", "-g", "daemon off;"]
 
